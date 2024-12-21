@@ -1,8 +1,8 @@
 // Load header and footer
 document.addEventListener("DOMContentLoaded", function () {
-   
+
     window.scrollTo(0, 0); // Ensures the page starts at the top
-    
+
     fetch('header.html')
         .then(response => response.text())
         .then(data => {
