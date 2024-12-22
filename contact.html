@@ -4,10 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+    <title>Contact Us</title>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.4.1/dist/email.min.js"></script>
+    <script>
+        (function () {
+            emailjs.init("6y9-L2iTNJJUi_F1Q"); // Replace with your EmailJS user ID
+        })();
+    </script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
@@ -118,7 +121,6 @@
 
 </head>
 
-
 <body>
     <!-- header -->
     <div id="header-container"></div>
@@ -129,10 +131,9 @@
             <!-- Contact Details -->
             <div class="col-md-6 d-flex flex-column align-items-center justify-content-center text-center">
                 <h2>Contact Me</h2>
-                <p class="pt-3 pb-4" style="width: 60%;">
-                    Feel free to reach out to me for any inquiries, collaborations, or just to say hello!
-                    You can use the form below to send me a message, and I’ll get back to you as soon as possible.
-                </p>
+                <p class="pt-3 pb-4" style="width: 60%;">Feel free to reach out to me for any inquiries, collaborations,
+                    or just to say hello! You can use the form below to send me a message, and I’ll get back to you as
+                    soon as possible.</p>
                 <ul class="list-unstyled">
                     <li><strong>Email:</strong> rahuljangid4380@gmail.com</li>
                     <li><strong>Phone:</strong> +91 7014138964</li>
@@ -141,7 +142,7 @@
             </div>
             <!-- Contact Form -->
             <div class="col-md-6">
-                <form>
+                <form id="contactForm">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control" id="name" placeholder="Your Name" aria-label="Name"
@@ -161,29 +162,61 @@
                 </form>
             </div>
         </div>
-
     </section>
 
     <!-- footer -->
     <div id="footer-container"></div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
-        // Function to load the header
+        // Function to load header and footer dynamically
         document.addEventListener("DOMContentLoaded", function () {
             fetch('header.html')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('header-container').innerHTML = data;
-                });
+                })
+                .catch(error => console.error('Error loading header:', error));
 
             fetch('footer.html')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('footer-container').innerHTML = data;
-                });
+                })
+                .catch(error => console.error('Error loading footer:', error));
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            emailjs.init("6y9-L2iTNJJUi_F1Q"); // Replace with your EmailJS user ID
         });
 
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            console.log("Preparing to send email...");
+            console.log("Data:", { name, email, message });
+
+            emailjs.send("service_4v0of2e", "template_swe9les", {
+                from_name: name,
+                from_email: email,
+                message: message,
+            }).then(
+                function (response) {
+                    alert("Your message has been sent successfully!");
+                    console.log("EmailJS Response:", response);
+                    document.getElementById('contactForm').reset();
+                },
+                function (error) {
+                    alert("Failed to send your message. Please check your input or try again later.");
+                    console.error("EmailJS Error:", error);
+                }
+            );
+        });
     </script>
+
 </body>
 
 </html>
